@@ -10,6 +10,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.metrics import mean_squared_error
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import cross_val_score
 housing = pd.read_csv("Data1.csv")
 
 
@@ -135,37 +136,66 @@ housingtr = my_pipeline.fit_transform(hous)
 # # print("Intercept:", model.intercept_)
 # # print("Coefficients:", model.coef_)
 
-# sd = hous.iloc[:5]
-# sl = houslab.iloc[:5]
-# pds = my_pipeline.transform(sd)
-# print(model.predict(pds))
+# sda = hous.iloc[:5]
+# sla = houslab.iloc[:5]
+# pdsa = my_pipeline.transform(sda)
+# print(model.predict(pdsa))
 
-# testf = test_set.drop("Y house price of unit area", axis=1)
-# testfp = my_pipeline.transform(testf)
 
-# houspr = model.predict(testfp)
-# mse = mean_squared_error(test_set['Y house price of unit area'],houspr)
-# rmse = np.sqrt(mse)
-# print(rmse)
+# housepr = model.predict(hous)
+# mmse = mean_squared_error(houslab,housepr)
+# rrmse = np.sqrt(mmse)
+# print(mmse)
+# print(rrmse)
 
 
 # mod = DecisionTreeRegressor()
-mod.fit(hous,houslab)
+# mod.fit(hous,houslab)
 
 # # print("Intercept:", model.intercept_)
 # # print("Coefficients:", model.coef_)
 
-sd = hous.iloc[:5]
-sl = houslab.iloc[:5]
-pds = my_pipeline.transform(sd)
-print(mod.predict(pds))
+# sd = hous.iloc[:5]
+# sl = houslab.iloc[:5]
+# pds = my_pipeline.transform(sd)
+# print(mod.predict(pds))
 
 testf = test_set.drop("Y house price of unit area", axis=1)
 testfp = my_pipeline.transform(testf)
 
-houspr = mod.predict(hous)
-mse = mean_squared_error(houslab,houspr)
-rmse = np.sqrt(mse)
-print(mse)
-print(rmse)
+# houspr = mod.predict(hous)
+# mse = mean_squared_error(houslab,houspr)
+# rmse = np.sqrt(mse)
+# print(mse)
+# print(rmse)
 
+modu = RandomForestRegressor()
+modu.fit(hous,houslab)
+
+sdc = hous.iloc[:5]
+slc = houslab.iloc[:5]
+pdsc = my_pipeline.transform(sdc)
+print(modu.predict(pdsc))
+
+housprs = modu.predict(hous)
+cmse = mean_squared_error(houslab,housprs)
+crmse = np.sqrt(cmse)
+print(cmse)
+print(crmse)
+
+
+# sc = cross_val_score(mod, hous, houslab, scoring="neg_mean_squared_error", cv=10)
+# sca= cross_val_score(model, hous, houslab, scoring="neg_mean_squared_error",cv=10)
+scs= cross_val_score(modu, hous, houslab, scoring="neg_mean_squared_error",cv=10)
+# rsc = np.sqrt(-sc)
+# rsca = np.sqrt(-sca)
+rscs = np.sqrt(-scs)
+# print(rsc)
+# print(rsca)
+print(rscs)
+
+def printsc(scs):
+    print("scores",scs)
+    print("mean",scs.mean())
+    print("standard deviation",scs.std())
+printsc(rscs)

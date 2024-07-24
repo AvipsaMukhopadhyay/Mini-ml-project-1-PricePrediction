@@ -160,8 +160,7 @@ housingtr = my_pipeline.fit_transform(hous)
 # pds = my_pipeline.transform(sd)
 # print(mod.predict(pds))
 
-testf = test_set.drop("Y house price of unit area", axis=1)
-testfp = my_pipeline.transform(testf)
+
 
 # houspr = mod.predict(hous)
 # mse = mean_squared_error(houslab,houspr)
@@ -199,3 +198,13 @@ def printsc(scs):
     print("mean",scs.mean())
     print("standard deviation",scs.std())
 printsc(rscs)
+
+testf = test_set.drop("Y house price of unit area", axis=1)
+testlab = test_set['Y house price of unit area'].copy()
+testfp = my_pipeline.transform(testf)
+
+fpred = modu.predict(testf)
+fmse = mean_squared_error(testlab,fpred)
+frmse = np.sqrt(fmse)
+
+print(frmse)
